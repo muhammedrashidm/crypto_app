@@ -61,7 +61,6 @@ class _WalletHomePageState extends State<WalletHomePage> {
           },
           builder: (context, state) {
             final colorScheme = Theme.of(context).colorScheme;
-            final textTheme = Theme.of(context).textTheme;
 
             if (state is HomeLoading || state is HomeInitial) {
               return Center(
@@ -73,8 +72,58 @@ class _WalletHomePageState extends State<WalletHomePage> {
 
             if (state is HomeLoaded) {
               final screenWidth = MediaQuery.of(context).size.width;
+              final isWideScreen = screenWidth >= 600;
               final isSmallScreen = screenWidth < 320;
               final double horizontalPadding = isSmallScreen ? 12.0 : AppSpacing.marginMobile;
+
+              if (isWideScreen) {
+                return Align(
+                  alignment: Alignment.topCenter,
+                  child: ConstrainedBox(
+                    constraints: const BoxConstraints(maxWidth: 960.0),
+                    child: SingleChildScrollView(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 24.0,
+                        vertical: 16.0,
+                      ),
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          // Left Column: Total Balance & Primary Actions & Biometrics Lock
+                          Expanded(
+                            flex: 1,
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                _buildHeader(context, state, false),
+                                const SizedBox(height: 24.0),
+                                _buildBalanceSection(context, state, false),
+                                const SizedBox(height: 24.0),
+                                _buildSendButton(context, state),
+                                if (state.showBiometricsPrompt) ...[
+                                  const SizedBox(height: 24.0),
+                                  _buildBiometricsCard(context, state, false),
+                                ],
+                              ],
+                            ),
+                          ),
+                          const SizedBox(width: 32.0),
+                          // Right Column: Assets List
+                          Expanded(
+                            flex: 1,
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                _buildAssetsSection(context, state),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                );
+              }
 
               return SingleChildScrollView(
                 padding: EdgeInsets.symmetric(
@@ -84,235 +133,17 @@ class _WalletHomePageState extends State<WalletHomePage> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          'bepay',
-                          style: (isSmallScreen ? textTheme.headlineMedium : textTheme.headlineLarge)?.copyWith(
-                            fontWeight: FontWeight.bold,
-                            letterSpacing: -0.5,
-                          ),
-                        ),
-                        Row(
-                          children: [
-                            IconButton(
-                              icon: Icon(
-                                Icons.history,
-                                color: colorScheme.onSurface,
-                              ),
-                              onPressed: () {
-                                context.push(AppPages.recentTransactions.path, extra: state.transactions);
-                              },
-                            ),
-                            IconButton(
-                              icon: Icon(
-                                Icons.settings_outlined,
-                                color: colorScheme.onSurface,
-                              ),
-                              onPressed: () {
-                                _showSettingsBottomSheet(context, state.selectedCurrency);
-                              },
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
+                    _buildHeader(context, state, isSmallScreen),
                     const SizedBox(height: 24.0),
-
-                    // Total Balance Section
-                    Text(
-                      'Total Balance',
-                      style: textTheme.bodySmall?.copyWith(
-                        color: colorScheme.onSurface.withValues(alpha: 0.5),
-                      ),
-                    ),
-                    const SizedBox(height: 8.0),
-                    FittedBox(
-                      fit: BoxFit.scaleDown,
-                      alignment: Alignment.centerLeft,
-                      child: Text(
-                        '${state.currencySymbol}${state.totalBalance.toStringAsFixed(2)}',
-                        style: isSmallScreen
-                            ? textTheme.displayMedium?.copyWith(fontWeight: FontWeight.bold)
-                            : textTheme.displayLarge,
-                      ),
-                    ),
-                    const SizedBox(height: 4.0),
-                    Wrap(
-                      crossAxisAlignment: WrapCrossAlignment.center,
-                      spacing: 8.0,
-                      runSpacing: 4.0,
-                      children: [
-                        const Icon(
-                          Icons.arrow_upward,
-                          size: 16.0,
-                          color: AppColors.success,
-                        ),
-                        Text(
-                          '+2.4% (24h)',
-                          style: textTheme.bodySmall?.copyWith(
-                            color: AppColors.success,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        Container(
-                          width: 4.0,
-                          height: 4.0,
-                          decoration: BoxDecoration(
-                            color: colorScheme.onSurface.withValues(alpha: 0.3),
-                            shape: BoxShape.circle,
-                          ),
-                        ),
-                        Text(
-                          'Network Status',
-                          style: textTheme.bodySmall?.copyWith(
-                            color: colorScheme.onSurface.withValues(alpha: 0.5),
-                          ),
-                        ),
-                        Container(
-                          width: 8.0,
-                          height: 8.0,
-                          decoration: const BoxDecoration(
-                            color: AppColors.success,
-                            shape: BoxShape.circle,
-                          ),
-                        ),
-                      ],
-                    ),
+                    _buildBalanceSection(context, state, isSmallScreen),
                     const SizedBox(height: 24.0),
-
-                    // Primary Action Button (Send)
-                    BepayButton(
-                      text: 'Send',
-                      onPressed: () {
-                        _showAssetSelectionBottomSheet(context, state.assets);
-                      },
-                    ),
+                    _buildSendButton(context, state),
                     const SizedBox(height: 24.0),
-
-                    // Biometrics Card (Wallet Home 2 State)
                     if (state.showBiometricsPrompt) ...[
-                      Container(
-                        decoration: BoxDecoration(
-                          color: colorScheme.surfaceContainerLow,
-                          borderRadius: BorderRadius.circular(AppRadius.md),
-                          border: Border.all(
-                            color: colorScheme.primary.withValues(alpha: 0.3),
-                            width: 1.0,
-                          ),
-                        ),
-                        padding: EdgeInsets.all(isSmallScreen ? 12.0 : 16.0),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Row(
-                              children: [
-                                Icon(
-                                  Icons.fingerprint,
-                                  color: colorScheme.primary,
-                                  size: 24.0,
-                                ),
-                                const SizedBox(width: 12.0),
-                                Expanded(
-                                  child: Text(
-                                    'Secure Your Assets',
-                                    style: (isSmallScreen ? textTheme.titleMedium : textTheme.bodyLarge)?.copyWith(
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                    maxLines: 1,
-                                    overflow: TextOverflow.ellipsis,
-                                  ),
-                                ),
-                              ],
-                            ),
-                            const SizedBox(height: 8.0),
-                            Text(
-                              'Your private keys never leave this device. Enable Biometrics for extra protection.',
-                              style: textTheme.bodySmall?.copyWith(
-                                color: colorScheme.onSurface.withValues(alpha: 0.7),
-                              ),
-                            ),
-                            const SizedBox(height: 16.0),
-                            LayoutBuilder(
-                              builder: (context, buttonConstraints) {
-                                if (buttonConstraints.maxWidth < 250) {
-                                  return Column(
-                                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                                    children: [
-                                      BepayButton(
-                                        text: 'Enable',
-                                        onPressed: () {
-                                          context.read<HomeBloc>().add(EnableBiometrics());
-                                        },
-                                      ),
-                                      const SizedBox(height: 8.0),
-                                      BepaySecondaryButton(
-                                        text: 'Dismiss',
-                                        onPressed: () {
-                                          context.read<HomeBloc>().add(DismissBiometricsPrompt());
-                                        },
-                                      ),
-                                    ],
-                                  );
-                                } else {
-                                  return Row(
-                                    children: [
-                                      Expanded(
-                                        child: BepaySecondaryButton(
-                                          text: 'Dismiss',
-                                          onPressed: () {
-                                            context.read<HomeBloc>().add(DismissBiometricsPrompt());
-                                          },
-                                        ),
-                                      ),
-                                      const SizedBox(width: 12.0),
-                                      Expanded(
-                                        child: BepayButton(
-                                          text: 'Enable',
-                                          onPressed: () {
-                                            context.read<HomeBloc>().add(EnableBiometrics());
-                                          },
-                                        ),
-                                      ),
-                                    ],
-                                  );
-                                }
-                              },
-                            ),
-                          ],
-                        ),
-                      ),
+                      _buildBiometricsCard(context, state, isSmallScreen),
                       const SizedBox(height: 24.0),
                     ],
-
-                    // Assets Title
-                    Text(
-                      'Assets',
-                      style: textTheme.headlineMedium?.copyWith(
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    const SizedBox(height: 12.0),
-
-                    // Assets list using TokenCard
-                    ...state.assets.map((asset) => TokenCard(
-                          symbol: asset.symbol,
-                          name: asset.name,
-                          amount: asset.amount.toString(),
-                          value: '${state.currencySymbol}${asset.fiatValue.toStringAsFixed(2)}',
-                          network: asset.network,
-                          onTap: () {},
-                          onSendTap: () {
-                            context.push(
-                              AppPages.recipientEntry.path,
-                              extra: CreateTransaction(
-                                coinSymbol: asset.symbol,
-                                network: asset.network,
-                              ),
-                            );
-                          },
-                        )),
+                    _buildAssetsSection(context, state),
                   ],
                 ),
               );
@@ -322,6 +153,255 @@ class _WalletHomePageState extends State<WalletHomePage> {
           },
         ),
       ),
+    );
+  }
+
+  Widget _buildHeader(BuildContext context, HomeLoaded state, bool isSmallScreen) {
+    final colorScheme = Theme.of(context).colorScheme;
+    final textTheme = Theme.of(context).textTheme;
+
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Text(
+          'bepay',
+          style: (isSmallScreen ? textTheme.headlineMedium : textTheme.headlineLarge)?.copyWith(
+            fontWeight: FontWeight.bold,
+            letterSpacing: -0.5,
+          ),
+        ),
+        Row(
+          children: [
+            IconButton(
+              icon: Icon(
+                Icons.history,
+                color: colorScheme.onSurface,
+              ),
+              onPressed: () {
+                context.push(AppPages.recentTransactions.path, extra: state.transactions);
+              },
+            ),
+            IconButton(
+              icon: Icon(
+                Icons.settings_outlined,
+                color: colorScheme.onSurface,
+              ),
+              onPressed: () {
+                _showSettingsBottomSheet(context, state.selectedCurrency);
+              },
+            ),
+          ],
+        ),
+      ],
+    );
+  }
+
+  Widget _buildBalanceSection(BuildContext context, HomeLoaded state, bool isSmallScreen) {
+    final colorScheme = Theme.of(context).colorScheme;
+    final textTheme = Theme.of(context).textTheme;
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          'Total Balance',
+          style: textTheme.bodySmall?.copyWith(
+            color: colorScheme.onSurface.withValues(alpha: 0.5),
+          ),
+        ),
+        const SizedBox(height: 8.0),
+        FittedBox(
+          fit: BoxFit.scaleDown,
+          alignment: Alignment.centerLeft,
+          child: Text(
+            '${state.currencySymbol}${state.totalBalance.toStringAsFixed(2)}',
+            style: isSmallScreen
+                ? textTheme.displayMedium?.copyWith(fontWeight: FontWeight.bold)
+                : textTheme.displayLarge,
+          ),
+        ),
+        const SizedBox(height: 4.0),
+        Wrap(
+          crossAxisAlignment: WrapCrossAlignment.center,
+          spacing: 8.0,
+          runSpacing: 4.0,
+          children: [
+            const Icon(
+              Icons.arrow_upward,
+              size: 16.0,
+              color: AppColors.success,
+            ),
+            Text(
+              '+2.4% (24h)',
+              style: textTheme.bodySmall?.copyWith(
+                color: AppColors.success,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            Container(
+              width: 4.0,
+              height: 4.0,
+              decoration: BoxDecoration(
+                color: colorScheme.onSurface.withValues(alpha: 0.3),
+                shape: BoxShape.circle,
+              ),
+            ),
+            Text(
+              'Network Status',
+              style: textTheme.bodySmall?.copyWith(
+                color: colorScheme.onSurface.withValues(alpha: 0.5),
+              ),
+            ),
+            Container(
+              width: 8.0,
+              height: 8.0,
+              decoration: const BoxDecoration(
+                color: AppColors.success,
+                shape: BoxShape.circle,
+              ),
+            ),
+          ],
+        ),
+      ],
+    );
+  }
+
+  Widget _buildSendButton(BuildContext context, HomeLoaded state) {
+    return BepayButton(
+      text: 'Send',
+      onPressed: () {
+        _showAssetSelectionBottomSheet(context, state.assets);
+      },
+    );
+  }
+
+  Widget _buildBiometricsCard(BuildContext context, HomeLoaded state, bool isSmallScreen) {
+    final colorScheme = Theme.of(context).colorScheme;
+    final textTheme = Theme.of(context).textTheme;
+
+    return Container(
+      decoration: BoxDecoration(
+        color: colorScheme.surfaceContainerLow,
+        borderRadius: BorderRadius.circular(AppRadius.md),
+        border: Border.all(
+          color: colorScheme.primary.withValues(alpha: 0.3),
+          width: 1.0,
+        ),
+      ),
+      padding: EdgeInsets.all(isSmallScreen ? 12.0 : 16.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Icon(
+                Icons.fingerprint,
+                color: colorScheme.primary,
+                size: 24.0,
+              ),
+              const SizedBox(width: 12.0),
+              Expanded(
+                child: Text(
+                  'Secure Your Assets',
+                  style: (isSmallScreen ? textTheme.titleMedium : textTheme.bodyLarge)?.copyWith(
+                    fontWeight: FontWeight.bold,
+                  ),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 8.0),
+          Text(
+            'Your private keys never leave this device. Enable Biometrics for extra protection.',
+            style: textTheme.bodySmall?.copyWith(
+              color: colorScheme.onSurface.withValues(alpha: 0.7),
+            ),
+          ),
+          const SizedBox(height: 16.0),
+          LayoutBuilder(
+            builder: (context, buttonConstraints) {
+              if (buttonConstraints.maxWidth < 250) {
+                return Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    BepayButton(
+                      text: 'Enable',
+                      onPressed: () {
+                        context.read<HomeBloc>().add(EnableBiometrics());
+                      },
+                    ),
+                    const SizedBox(height: 8.0),
+                    BepaySecondaryButton(
+                      text: 'Dismiss',
+                      onPressed: () {
+                        context.read<HomeBloc>().add(DismissBiometricsPrompt());
+                      },
+                    ),
+                  ],
+                );
+              } else {
+                return Row(
+                  children: [
+                    Expanded(
+                      child: BepaySecondaryButton(
+                        text: 'Dismiss',
+                        onPressed: () {
+                          context.read<HomeBloc>().add(DismissBiometricsPrompt());
+                        },
+                      ),
+                    ),
+                    const SizedBox(width: 12.0),
+                    Expanded(
+                      child: BepayButton(
+                        text: 'Enable',
+                        onPressed: () {
+                          context.read<HomeBloc>().add(EnableBiometrics());
+                        },
+                      ),
+                    ),
+                  ],
+                );
+              }
+            },
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildAssetsSection(BuildContext context, HomeLoaded state) {
+    final textTheme = Theme.of(context).textTheme;
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          'Assets',
+          style: textTheme.headlineMedium?.copyWith(
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        const SizedBox(height: 12.0),
+        ...state.assets.map((asset) => TokenCard(
+              symbol: asset.symbol,
+              name: asset.name,
+              amount: asset.amount.toString(),
+              value: '${state.currencySymbol}${asset.fiatValue.toStringAsFixed(2)}',
+              network: asset.network,
+              onTap: () {},
+              onSendTap: () {
+                context.push(
+                  AppPages.recipientEntry.path,
+                  extra: CreateTransaction(
+                    coinSymbol: asset.symbol,
+                    network: asset.network,
+                  ),
+                );
+              },
+            )),
+      ],
     );
   }
 
