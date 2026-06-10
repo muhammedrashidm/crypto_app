@@ -1,0 +1,11 @@
+{
+  "version": 1,
+  "skills": {
+    "flutter-bloc-development": {
+      "source": "abdelhakrazi/flutter-bloc-clean-architecture-skill",
+      "sourceType": "github",
+      "skillPath": "SKILL.md",
+      "computedHash": "8ccbd47b4da6e192c6d49c52c7097ba1fcd06dca5e12fe3eddd43419cecd2354"
+    }
+  }
+}
