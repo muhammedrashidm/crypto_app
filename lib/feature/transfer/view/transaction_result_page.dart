@@ -62,42 +62,44 @@ class TransactionResultPage extends StatelessWidget {
                     borderRadius: BorderRadius.circular(AppRadius.md),
                     border: Border.all(color: AppColors.borderSubtle, width: 1.0),
                   ),
-                  child: Column(
-                    children: [
-                      TransactionRow(
-                        label: 'Status',
-                        value: transaction.status.displayName,
-                      ),
-                      TransactionRow(
-                        label: 'Recipient',
-                        value: transaction.recipientName == transaction.recipientAddress
-                            ? transaction.recipientAddress
-                            : '${transaction.recipientName} (${transaction.recipientAddress})',
-                      ),
-                      TransactionRow(
-                        label: 'Network',
-                        value: transaction.networkName,
-                      ),
-                      TransactionRow(
-                        label: 'Amount',
-                        value: '${transaction.amount} ${transaction.coinSymbol}',
-                      ),
-                      TransactionRow(
-                        label: 'Network Fee',
-                        value: '${transaction.fee} ${transaction.coinSymbol}',
-                      ),
-                      if (transaction.memo != null && transaction.memo!.isNotEmpty)
+                  child: SingleChildScrollView(
+                    child: Column(
+                      children: [
                         TransactionRow(
-                          label: 'Memo / Note',
-                          value: transaction.memo!,
+                          label: 'Status',
+                          value: transaction.status.displayName,
                         ),
-                      const Divider(height: 20.0),
-                      TransactionRow(
-                        label: 'Total Deduction',
-                        value: totalDeductionLabel,
-                        isTotal: true,
-                      ),
-                    ],
+                        TransactionRow(
+                          label: 'Recipient',
+                          value: transaction.recipientName == transaction.recipientAddress
+                              ? transaction.recipientAddress
+                              : '${transaction.recipientName} (${transaction.recipientAddress})',
+                        ),
+                        TransactionRow(
+                          label: 'Network',
+                          value: transaction.networkName,
+                        ),
+                        TransactionRow(
+                          label: 'Amount',
+                          value: '${transaction.amount} ${transaction.coinSymbol}',
+                        ),
+                        TransactionRow(
+                          label: 'Network Fee',
+                          value: '${transaction.fee} ${transaction.coinSymbol}',
+                        ),
+                        if (transaction.memo != null && transaction.memo!.isNotEmpty)
+                          TransactionRow(
+                            label: 'Memo / Note',
+                            value: transaction.memo!,
+                          ),
+                        const Divider(height: 20.0),
+                        TransactionRow(
+                          label: 'Total Deduction',
+                          value: totalDeductionLabel,
+                          isTotal: true,
+                        ),
+                      ],
+                    ),
                   ),
                 ),
                 const SizedBox(height: 24.0),

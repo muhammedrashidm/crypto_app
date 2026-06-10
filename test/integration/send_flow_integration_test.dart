@@ -26,9 +26,9 @@ import 'package:crypto_app/feature/transfer/domain/usecases/complete_transaction
 import 'package:crypto_app/feature/home/domain/repositories/biometric_repository.dart';
 import 'package:crypto_app/shared/data/repositories/currency_repository.dart';
 
-import 'package:crypto_app/feature/transfer/bloc/recipient_entry_bloc.dart';
-import 'package:crypto_app/feature/transfer/bloc/amount_entry_bloc.dart';
-import 'package:crypto_app/feature/transfer/bloc/pin_confirmation_bloc.dart';
+import 'package:crypto_app/feature/transfer/bloc/recipient_entry/recipient_entry_bloc.dart';
+import 'package:crypto_app/feature/transfer/bloc/amount_entry/amount_entry_bloc.dart';
+import 'package:crypto_app/feature/transfer/bloc/pin_confirmation/pin_confirmation_bloc.dart';
 
 // --- FAKE IMPLEMENTATIONS ---
 

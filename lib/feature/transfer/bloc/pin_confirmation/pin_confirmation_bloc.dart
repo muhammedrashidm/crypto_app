@@ -3,8 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
 import 'package:crypto_app/shared/services/shared_pref_service.dart';
 import 'package:crypto_app/feature/home/domain/repositories/biometric_repository.dart';
-import '../domain/usecases/verify_pin_usecase.dart';
-import '../domain/usecases/complete_transaction_usecase.dart';
+import '../../domain/usecases/verify_pin_usecase.dart';
+import '../../domain/usecases/complete_transaction_usecase.dart';
 import 'pin_confirmation_event.dart';
 import 'pin_confirmation_state.dart';
 

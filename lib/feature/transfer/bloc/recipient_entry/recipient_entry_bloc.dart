@@ -1,6 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
-import '../domain/usecases/get_recent_recipients_usecase.dart';
+import '../../domain/usecases/get_recent_recipients_usecase.dart';
 import 'recipient_entry_event.dart';
 import 'recipient_entry_state.dart';
 

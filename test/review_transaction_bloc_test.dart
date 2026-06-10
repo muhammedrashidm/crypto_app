@@ -6,9 +6,9 @@ import 'package:crypto_app/feature/transfer/domain/entities/contact.dart';
 import 'package:crypto_app/feature/transfer/domain/entities/transaction.dart';
 import 'package:crypto_app/feature/transfer/domain/entities/create_transaction.dart';
 import 'package:crypto_app/feature/transfer/domain/usecases/create_transaction_usecase.dart';
-import 'package:crypto_app/feature/transfer/bloc/review_transaction_bloc.dart';
-import 'package:crypto_app/feature/transfer/bloc/review_transaction_event.dart';
-import 'package:crypto_app/feature/transfer/bloc/review_transaction_state.dart';
+import 'package:crypto_app/feature/transfer/bloc/review_transaction/review_transaction_bloc.dart';
+import 'package:crypto_app/feature/transfer/bloc/review_transaction/review_transaction_event.dart';
+import 'package:crypto_app/feature/transfer/bloc/review_transaction/review_transaction_state.dart';
 
 class FakeCurrencyRepository implements CurrencyRepository {
   @override

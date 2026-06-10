@@ -1,5 +1,5 @@
 import 'package:equatable/equatable.dart';
-import '../domain/entities/transaction.dart';
+import '../../domain/entities/transaction.dart';
 
 abstract class PinConfirmationEvent extends Equatable {
   const PinConfirmationEvent();

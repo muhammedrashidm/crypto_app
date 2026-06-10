@@ -1,5 +1,5 @@
 import 'package:equatable/equatable.dart';
-import '../domain/entities/create_transaction.dart';
+import '../../domain/entities/create_transaction.dart';
 
 abstract class ReviewTransactionEvent extends Equatable {
   const ReviewTransactionEvent();

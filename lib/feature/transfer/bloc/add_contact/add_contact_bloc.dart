@@ -1,7 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
-import '../domain/entities/contact.dart';
-import '../domain/usecases/add_contact_usecase.dart';
+import '../../domain/entities/contact.dart';
+import '../../domain/usecases/add_contact_usecase.dart';
 import 'add_contact_event.dart';
 import 'add_contact_state.dart';
 

@@ -1,9 +1,9 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:crypto_app/shared/error/failure.dart';
-import 'package:crypto_app/feature/transfer/bloc/amount_entry_bloc.dart';
-import 'package:crypto_app/feature/transfer/bloc/amount_entry_event.dart';
-import 'package:crypto_app/feature/transfer/bloc/amount_entry_state.dart';
+import 'package:crypto_app/feature/transfer/bloc/amount_entry/amount_entry_bloc.dart';
+import 'package:crypto_app/feature/transfer/bloc/amount_entry/amount_entry_event.dart';
+import 'package:crypto_app/feature/transfer/bloc/amount_entry/amount_entry_state.dart';
 import 'package:crypto_app/feature/transfer/domain/repositories/transfer_repository.dart';
 import 'package:crypto_app/feature/transfer/domain/usecases/get_max_coin_available_usecase.dart';
 

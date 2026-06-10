@@ -1,9 +1,9 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:crypto_app/shared/error/failure.dart';
-import 'package:crypto_app/feature/transfer/bloc/add_contact_bloc.dart';
-import 'package:crypto_app/feature/transfer/bloc/add_contact_event.dart';
-import 'package:crypto_app/feature/transfer/bloc/add_contact_state.dart';
+import 'package:crypto_app/feature/transfer/bloc/add_contact/add_contact_bloc.dart';
+import 'package:crypto_app/feature/transfer/bloc/add_contact/add_contact_event.dart';
+import 'package:crypto_app/feature/transfer/bloc/add_contact/add_contact_state.dart';
 import 'package:crypto_app/feature/transfer/domain/entities/contact.dart';
 import 'package:crypto_app/feature/transfer/domain/repositories/transfer_repository.dart';
 import 'package:crypto_app/feature/transfer/domain/usecases/add_contact_usecase.dart';

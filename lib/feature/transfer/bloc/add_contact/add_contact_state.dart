@@ -1,5 +1,5 @@
 import 'package:equatable/equatable.dart';
-import '../domain/entities/contact.dart';
+import '../../domain/entities/contact.dart';
 
 class AddContactState extends Equatable {
   final String name;

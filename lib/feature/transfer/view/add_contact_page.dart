@@ -6,9 +6,9 @@ import 'package:crypto_app/shared/theme/app_colors.dart';
 import 'package:crypto_app/shared/theme/app_radius.dart';
 import 'package:crypto_app/shared/theme/app_spacing.dart';
 import 'package:crypto_app/shared/widgets/bepay_button.dart';
-import '../bloc/add_contact_bloc.dart';
-import '../bloc/add_contact_event.dart';
-import '../bloc/add_contact_state.dart';
+import '../bloc/add_contact/add_contact_bloc.dart';
+import '../bloc/add_contact/add_contact_event.dart';
+import '../bloc/add_contact/add_contact_state.dart';
 
 class AddContactPage extends StatefulWidget {
   const AddContactPage({super.key});

@@ -28,16 +28,16 @@ import 'package:crypto_app/feature/home/domain/usecases/get_biometrics_settings_
     as _i449;
 import 'package:crypto_app/feature/home/domain/usecases/update_biometrics_prompt_dismissed_usecase.dart'
     as _i80;
-import 'package:crypto_app/feature/transfer/bloc/add_contact_bloc.dart'
-    as _i101;
-import 'package:crypto_app/feature/transfer/bloc/amount_entry_bloc.dart'
-    as _i157;
-import 'package:crypto_app/feature/transfer/bloc/pin_confirmation_bloc.dart'
-    as _i99;
-import 'package:crypto_app/feature/transfer/bloc/recipient_entry_bloc.dart'
-    as _i344;
-import 'package:crypto_app/feature/transfer/bloc/review_transaction_bloc.dart'
-    as _i307;
+import 'package:crypto_app/feature/transfer/bloc/add_contact/add_contact_bloc.dart'
+    as _i335;
+import 'package:crypto_app/feature/transfer/bloc/amount_entry/amount_entry_bloc.dart'
+    as _i78;
+import 'package:crypto_app/feature/transfer/bloc/pin_confirmation/pin_confirmation_bloc.dart'
+    as _i47;
+import 'package:crypto_app/feature/transfer/bloc/recipient_entry/recipient_entry_bloc.dart'
+    as _i944;
+import 'package:crypto_app/feature/transfer/bloc/review_transaction/review_transaction_bloc.dart'
+    as _i359;
 import 'package:crypto_app/feature/transfer/data/datasources/transfer_remote_data_source.dart'
     as _i310;
 import 'package:crypto_app/feature/transfer/data/repositories/transfer_repository_impl.dart'
@@ -105,31 +105,31 @@ extension GetItInjectableX on _i174.GetIt {
         () => _i288.HomeRepositoryImpl(gh<_i844.HomeRemoteDataSource>()));
     gh.lazySingleton<_i692.TransferRepository>(() =>
         _i595.TransferRepositoryImpl(gh<_i310.TransferRemoteDataSource>()));
-    gh.lazySingleton<_i675.GetRecentRecipientsUseCase>(
-        () => _i675.GetRecentRecipientsUseCase(gh<_i692.TransferRepository>()));
+    gh.lazySingleton<_i214.AddContactUseCase>(
+        () => _i214.AddContactUseCase(gh<_i692.TransferRepository>()));
+    gh.lazySingleton<_i972.CompleteTransactionUseCase>(
+        () => _i972.CompleteTransactionUseCase(gh<_i692.TransferRepository>()));
     gh.lazySingleton<_i339.CreateTransactionUseCase>(
         () => _i339.CreateTransactionUseCase(gh<_i692.TransferRepository>()));
     gh.lazySingleton<_i467.GetMaxCoinAvailableUseCase>(
         () => _i467.GetMaxCoinAvailableUseCase(gh<_i692.TransferRepository>()));
-    gh.lazySingleton<_i421.VerifyPinUseCase>(
-        () => _i421.VerifyPinUseCase(gh<_i692.TransferRepository>()));
-    gh.lazySingleton<_i972.CompleteTransactionUseCase>(
-        () => _i972.CompleteTransactionUseCase(gh<_i692.TransferRepository>()));
-    gh.lazySingleton<_i214.AddContactUseCase>(
-        () => _i214.AddContactUseCase(gh<_i692.TransferRepository>()));
+    gh.lazySingleton<_i675.GetRecentRecipientsUseCase>(
+        () => _i675.GetRecentRecipientsUseCase(gh<_i692.TransferRepository>()));
     gh.lazySingleton<_i180.GetRecentTransactionsUseCase>(() =>
         _i180.GetRecentTransactionsUseCase(gh<_i692.TransferRepository>()));
-    gh.factory<_i101.AddContactBloc>(
-        () => _i101.AddContactBloc(gh<_i214.AddContactUseCase>()));
-    gh.factory<_i307.ReviewTransactionBloc>(() => _i307.ReviewTransactionBloc(
+    gh.lazySingleton<_i421.VerifyPinUseCase>(
+        () => _i421.VerifyPinUseCase(gh<_i692.TransferRepository>()));
+    gh.factory<_i335.AddContactBloc>(
+        () => _i335.AddContactBloc(gh<_i214.AddContactUseCase>()));
+    gh.factory<_i359.ReviewTransactionBloc>(() => _i359.ReviewTransactionBloc(
           gh<_i339.CreateTransactionUseCase>(),
           gh<_i870.CurrencyRepository>(),
         ));
-    gh.factory<_i157.AmountEntryBloc>(() => _i157.AmountEntryBloc(
+    gh.factory<_i78.AmountEntryBloc>(() => _i78.AmountEntryBloc(
           gh<_i467.GetMaxCoinAvailableUseCase>(),
           gh<_i870.CurrencyRepository>(),
         ));
-    gh.factory<_i99.PinConfirmationBloc>(() => _i99.PinConfirmationBloc(
+    gh.factory<_i47.PinConfirmationBloc>(() => _i47.PinConfirmationBloc(
           gh<_i421.VerifyPinUseCase>(),
           gh<_i972.CompleteTransactionUseCase>(),
           gh<_i567.SharedPrefService>(),
@@ -137,8 +137,8 @@ extension GetItInjectableX on _i174.GetIt {
         ));
     gh.lazySingleton<_i813.GetAssetsUseCase>(
         () => _i813.GetAssetsUseCase(gh<_i556.HomeRepository>()));
-    gh.factory<_i344.RecipientEntryBloc>(
-        () => _i344.RecipientEntryBloc(gh<_i675.GetRecentRecipientsUseCase>()));
+    gh.factory<_i944.RecipientEntryBloc>(
+        () => _i944.RecipientEntryBloc(gh<_i675.GetRecentRecipientsUseCase>()));
     gh.factory<_i389.HomeBloc>(() => _i389.HomeBloc(
           gh<_i813.GetAssetsUseCase>(),
           gh<_i449.GetBiometricsSettingsUseCase>(),

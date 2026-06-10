@@ -1,7 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
 import 'package:crypto_app/shared/utils/coin_formatter.dart';
-import '../domain/usecases/create_transaction_usecase.dart';
+import '../../domain/usecases/create_transaction_usecase.dart';
 import 'package:crypto_app/shared/data/repositories/currency_repository.dart';
 import 'review_transaction_event.dart';
 import 'review_transaction_state.dart';

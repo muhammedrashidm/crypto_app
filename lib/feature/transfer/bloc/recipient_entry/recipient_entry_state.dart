@@ -1,5 +1,5 @@
 import 'package:equatable/equatable.dart';
-import '../domain/entities/contact.dart';
+import '../../domain/entities/contact.dart';
 
 enum RecipientEntryStatus { initial, loading, success, failure }
 
